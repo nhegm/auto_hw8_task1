@@ -2,13 +2,16 @@ package data;
 
 import com.github.javafaker.Faker;
 import lombok.Value;
+
 import java.util.Locale;
 
 public class DataHelper {
 
     public static final Faker faker = new Faker(new Locale("ru"));
+
     private DataHelper() {
     }
+
     public static AuthInfo getValidAuthInfo() {
         return new AuthInfo("vasya", "qwerty123");
     }

@@ -3,6 +3,7 @@ package page;
 import com.codeborne.selenide.SelenideElement;
 import data.DataHelper;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage {
@@ -10,19 +11,23 @@ public class LoginPage {
     private SelenideElement passwordField = $("[data-test-id=password] input");
     private SelenideElement buttonContinue = $("[data-test-id=action-login]");
     private SelenideElement errorNote = $("[data-test-id=error-notification] .notification__content");
-    public VerificationPage validLogin(DataHelper.AuthInfo info) {
+
+    private void fieldsFill(DataHelper.AuthInfo info) {
         loginField.setValue(info.getLogin());
         passwordField.setValue(info.getPassword());
         buttonContinue.click();
+    }
+
+    public VerificationPage validLogin() {
+        fieldsFill(DataHelper.getValidAuthInfo());
         return new VerificationPage();
     }
 
-    public SelenideElement invalidLogin(DataHelper.AuthInfo info) {
-        info = DataHelper.generateRandomUser();
-        loginField.setValue(info.getLogin());
-        passwordField.setValue(info.getPassword());
-        buttonContinue.click();
-        return errorNote;
+    public void invalidLogin() {
+        fieldsFill(DataHelper.generateRandomUser());
     }
 
+    public void errorNote() {
+        errorNote.shouldBe(visible);
+    }
 }

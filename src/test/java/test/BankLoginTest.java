@@ -5,6 +5,7 @@ import data.SQLHelper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import page.LoginPage;
+import page.VerificationPage;
 
 import static com.codeborne.selenide.Selenide.*;
 
@@ -18,28 +19,29 @@ public class BankLoginTest {
     @Test
     void shouldSuccessfullyLogin() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfo = DataHelper.getValidAuthInfo();
-        var verificationPage = loginPage.validLogin(authInfo);
+        DataHelper.getValidAuthInfo();
+        var verificationPage = loginPage.validLogin();
         verificationPage.isVerificationPageVisible();
-        var verificationCode = SQLHelper.getVerificationCode();
-        verificationPage.validVerify(verificationCode.getVerificationCode());
+        SQLHelper.getVerificationCode();
+        verificationPage.validVerify();
     }
 
     @Test
     void shouldThrowErrorNotificationWhenTryToLoginNonExistUser() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
         var authInfo = DataHelper.generateRandomUser();
-        loginPage.invalidLogin(authInfo);
+        loginPage.invalidLogin();
+        loginPage.errorNote();
     }
 
     @Test
     void shouldNotLoginWhenVerificationCodeIsWrong() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        var authInfo = DataHelper.getValidAuthInfo();
-        var verificationPage = loginPage.validLogin(authInfo);
+        DataHelper.getValidAuthInfo();
+        var verificationPage = loginPage.validLogin();
         verificationPage.isVerificationPageVisible();
-        var verificationCode = DataHelper.generateRandomCode();
-        verificationPage.invalidVerify(verificationCode.getVerificationCode());
+        DataHelper.generateRandomCode();
+        verificationPage.invalidVerify();
         verificationPage.isNotificationErrorVisible();
     }
 

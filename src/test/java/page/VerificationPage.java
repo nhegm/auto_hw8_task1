@@ -1,6 +1,8 @@
 package page;
 
 import com.codeborne.selenide.SelenideElement;
+import data.DataHelper;
+import data.SQLHelper;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
@@ -18,15 +20,16 @@ public class VerificationPage {
         errorNote.shouldBe(visible);
     }
 
-    public DashboardPage validVerify(String verificationCode) {
+    private void fieldsFill(String verificationCode) {
         codeField.setValue(verificationCode);
         buttonVerify.click();
+    }
+    public DashboardPage validVerify() {
+        fieldsFill(SQLHelper.getVerificationCode().getVerificationCode());
         return new DashboardPage();
     }
 
-    public SelenideElement invalidVerify(String verificationCode) {
-        codeField.setValue(verificationCode);
-        buttonVerify.click();
-        return errorNote;
+    public void invalidVerify() {
+        fieldsFill(DataHelper.generateRandomCode().getVerificationCode());
     }
 }
