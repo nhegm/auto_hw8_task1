@@ -19,29 +19,29 @@ public class BankLoginTest {
     @Test
     void shouldSuccessfullyLogin() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        DataHelper.getValidAuthInfo();
-        var verificationPage = loginPage.validLogin();
+        var info = DataHelper.getValidAuthInfo();
+        var verificationPage = loginPage.validLogin(info);
         verificationPage.isVerificationPageVisible();
-        SQLHelper.getVerificationCode();
-        verificationPage.validVerify();
+        var code = SQLHelper.getVerificationCode();
+        verificationPage.validVerify(code);
     }
 
     @Test
     void shouldThrowErrorNotificationWhenTryToLoginNonExistUser() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
         var authInfo = DataHelper.generateRandomUser();
-        loginPage.invalidLogin();
+        loginPage.invalidLogin(authInfo);
         loginPage.errorNote();
     }
 
     @Test
     void shouldNotLoginWhenVerificationCodeIsWrong() {
         var loginPage = open("http://localhost:9999", LoginPage.class);
-        DataHelper.getValidAuthInfo();
-        var verificationPage = loginPage.validLogin();
+        var info = DataHelper.getValidAuthInfo();
+        var verificationPage = loginPage.validLogin(info);
         verificationPage.isVerificationPageVisible();
-        DataHelper.generateRandomCode();
-        verificationPage.invalidVerify();
+        var code = DataHelper.generateRandomCode();
+        verificationPage.invalidVerify(code);
         verificationPage.isNotificationErrorVisible();
     }
 

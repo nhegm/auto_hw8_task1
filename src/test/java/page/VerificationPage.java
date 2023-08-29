@@ -20,16 +20,17 @@ public class VerificationPage {
         errorNote.shouldBe(visible);
     }
 
-    private void fieldsFill(String verificationCode) {
-        codeField.setValue(verificationCode);
+    private void fieldsFill(DataHelper.VerificationCode verificationCode) {
+        codeField.setValue(verificationCode.toString());
         buttonVerify.click();
     }
-    public DashboardPage validVerify() {
-        fieldsFill(SQLHelper.getVerificationCode().getVerificationCode());
+
+    public DashboardPage validVerify(DataHelper.VerificationCode code) {
+        fieldsFill(code);
         return new DashboardPage();
     }
 
-    public void invalidVerify() {
-        fieldsFill(DataHelper.generateRandomCode().getVerificationCode());
+    public void invalidVerify(DataHelper.VerificationCode code) {
+        fieldsFill(code);
     }
 }

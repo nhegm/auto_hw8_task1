@@ -18,13 +18,13 @@ public class LoginPage {
         buttonContinue.click();
     }
 
-    public VerificationPage validLogin() {
-        fieldsFill(DataHelper.getValidAuthInfo());
+    public VerificationPage validLogin(DataHelper.AuthInfo info) {
+        fieldsFill(info);
         return new VerificationPage();
     }
 
-    public void invalidLogin() {
-        fieldsFill(DataHelper.generateRandomUser());
+    public void invalidLogin(DataHelper.AuthInfo auth) {
+        fieldsFill(auth);
     }
 
     public void errorNote() {
